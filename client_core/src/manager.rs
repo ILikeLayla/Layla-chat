@@ -1,4 +1,4 @@
-use crate::{exception::{Error, Warn, WarnType}, User};
+use crate::{exception::{Error, ErrorStruct, Warn, WarnType}, User};
 use super::{group::Group, config::ID_PLACEHOLDER};
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -17,7 +17,7 @@ impl Manager {
     }
 
     pub fn new_user_by_string(&mut self, s: String) -> Result<(), Error>{
-        let mut user: User = s.into();
+        let mut user: ErrorStruct<User> = s.into();
         let mut current_id = user.get_id();
         while self.user_list.contains_key(&current_id) {
             current_id += ID_PLACEHOLDER
