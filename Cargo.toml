@@ -1,4 +1,7 @@
-workspace = { members = [ "chat_client","chat_core", "chat_server"] }
+[workspace] 
+members = [ "chat_client", "client_core", "http", "http_server", "server_core", "tcp_server" ]
+# resolver = "2"
+
 [package]
 name = "layla_chat"
 version = "0.1.0"

@@ -1,5 +1,5 @@
 [package]
-name = "chat_server"
+name = "server_core"
 version = "0.1.0"
 edition = "2021"
 
