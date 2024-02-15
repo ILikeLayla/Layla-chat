@@ -3,7 +3,6 @@ mod message;
 mod user;
 mod manager;
 mod request;
-// mod translator;
 mod config;
 mod group;
 pub mod exception;
@@ -13,7 +12,6 @@ pub use net::*;
 pub use user::*;
 pub use manager::*;
 pub use request::*;
-// use translator::*;
 
 use lazy_static::lazy_static;
 
