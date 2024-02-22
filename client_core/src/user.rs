@@ -1,8 +1,11 @@
-use super::{exception::{Error, ErrorType, ErrorStruct}, format_checker};
+use super::format_checker;
 use std::hash::{Hasher, Hash};
 use std::collections::hash_map::DefaultHasher;
 use std::time::SystemTime;
 use super::config::UNACCEPTABLE_NAME_CHAR;
+use super::MANAGER;
+// use logger::exception::error::{Error, ErrorType, ErrorStruct};
+use logger::exception::error::*;
 
 #[derive(PartialEq, Eq, Clone)]
 pub struct User {
@@ -37,7 +40,7 @@ impl User {
     }
 }
 
-impl From<String> for ErrorStruct<User> {
+impl From<String> for &User {
     fn from(value: String) -> Self {
         let data = format_checker(value, "User<", ">");
 
@@ -57,13 +60,21 @@ impl From<String> for ErrorStruct<User> {
         let mut buffer1 = Vec::new();
 
         for i in buffer.iter() {
-            buffer1.push(match i {
+            buffer1.push(match &i {
                 &ErrorStruct::Ok(s) => s,
-                &ErrorStruct::Err(e) => return ErrorStruct::Err(e)
+                &ErrorStruct::Err(e) => return ErrorStruct::Err(e.clone())
             })
         }
 
-        return ErrorStruct::Ok(User { name: buffer1[0].clone(),  id: buffer1[1].clone() })
+        let user_check = MANAGER.check_user_exist(&buffer1[1]);
+        return match user_check {
+            true => {
+                MANAGER.get_user(&buffer1[1])
+            },
+            false => unsafe {
+                MANAGER.add_user(User { name: buffer1[0].clone(),  id: buffer1[1].clone() })
+            }
+        }
     }
 }
 
@@ -73,8 +84,15 @@ impl From<User> for String {
     }
 }
 
+impl From<&User> for String {
+    fn from(value: &User) -> Self {
+        format!("User<name<{}>,id<{}>>", value.name, value.id)
+    }
+}
+
 impl std::fmt::Display for User {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.to_string())
+        let display_buffer: String = self.into();
+        write!(f, "{}", display_buffer)
     }
 }

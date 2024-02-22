@@ -1,7 +1,6 @@
-use crate::{exception::{Error, ErrorStruct, Warn, WarnType}, User};
-use super::group::Group;
+use super::{User, group::Group};
 use std::collections::HashMap;
-use std::sync::Arc;
+use logger::exception::error::*;
 
 pub struct Manager {
     group_list: HashMap<String, Group>,
@@ -16,29 +15,43 @@ impl Manager {
         }
     }
 
-    pub fn new_remote_user(&mut self, s: String) -> ErrorStruct<()> {
-        let user: ErrorStruct<User> = s.into();
-        let mut user = match user {
-            ErrorStruct::Ok(u) => u,
-            ErrorStruct::Err(e) => return ErrorStruct::Err(e)
-        };
-        let _ = self.user_list.insert(user.get_id(), user);
-        ErrorStruct::Ok(())
+    pub fn get_user(&self, id: &str) -> ErrorStruct<&User> {
+        return match self.user_list.get(id) {
+            Some(user) => ErrorStruct::Ok(user),
+            None => ErrorStruct::Err(Error::default(ErrorType::IdNotFound))
+        }
     }
 
-    pub fn add_user_to_group(&mut self, user_id:String, group_id:String) -> Result<(), Warn> {
-        let user = match self.user_list.get(&user_id) {
-            Some(buffer) => {
-                Arc::new(*buffer)
-            },
-            None => return Err(Warn::default(WarnType::IdNotFound)),
-        };
-        let mut group = match self.group_list.get_mut(&group_id) {
-            Some(a) => a,
-            None => return Err(Warn::default(WarnType::IdNotFound))
-        };
-        group.add_user(user);
-        Ok(())
+    pub fn add_user(&mut self, user: User) -> ErrorStruct<&User> {
+        let id_buffer = user.get_id();
+        return if self.check_user_exist(&id_buffer) {
+            ErrorStruct::Err(Error::default(ErrorType::IdOccupied))
+        } else {
+            let _ = self.user_list.insert(id_buffer.clone(), user);
+            self.get_user(&id_buffer)
+        }
+    }
+
+    pub fn check_user_exist(&self, id: &str) -> bool {
+        return self.user_list.contains_key(id);
     }
 }
 
+// impl std::ops::Deref for Manager {
+//     type Target = Manager;
+//     fn deref(&self) -> &Self::Target {
+//         self
+//     }
+// }
+
+// impl std::ops::DerefMut for Manager {
+//     fn deref_mut(&mut self) -> &mut Self::Target {
+//         self
+//     }
+// }
+
+impl utils::init_block::InitAble for Manager {
+    fn init() -> Self {
+        Self::new()
+    }
+}
