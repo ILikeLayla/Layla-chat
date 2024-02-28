@@ -165,17 +165,21 @@ name = "chat_client"
 version = "0.1.0"
 dependencies = [
  "client_core",
+ "utils",
 ]
 
 [[package]]
 name = "chat_server"
 version = "0.1.0"
+dependencies = [
+ "server_core",
+]
 
 [[package]]
 name = "chrono"
-version = "0.4.33"
+version = "0.4.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9f13690e35a5e4ace198e7beea2895d29f3a9cc55015fcebe6336bd2010af9eb"
+checksum = "5bc015644b92d5890fab7489e49d21f879d5c990186827d42ec511919404f38b"
 dependencies = [
  "android-tzdata",
  "iana-time-zone",
@@ -191,7 +195,6 @@ name = "client_core"
 version = "0.1.0"
 dependencies = [
  "chrono",
- "dotenv",
  "lazy_static",
  "logger",
  "tokio",
@@ -539,16 +542,6 @@ name = "http"
 version = "0.1.0"
 
 [[package]]
-name = "http_server"
-version = "0.1.0"
-dependencies = [
- "dotenv",
- "http",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "iana-time-zone"
 version = "0.1.60"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -676,9 +669,6 @@ checksum = "b5e6163cb8c49088c2c36f57875e58ccd8c87c7427f7fbd50ea6710b2f3f2e8f"
 [[package]]
 name = "logger"
 version = "0.1.0"
-dependencies = [
- "lazy_static",
-]
 
 [[package]]
 name = "md-5"
@@ -1459,10 +1449,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tcp_server"
-version = "0.1.0"
-
-[[package]]
 name = "tempfile"
 version = "3.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1647,6 +1633,11 @@ checksum = "daf8dba3b7eb870caf1ddeed7bc9d2a049f3cfdfae7cb521b087cc33ae4c49da"
 [[package]]
 name = "utils"
 version = "0.1.0"
+dependencies = [
+ "chrono",
+ "dotenv",
+ "lazy_static",
+]
 
 [[package]]
 name = "vcpkg"

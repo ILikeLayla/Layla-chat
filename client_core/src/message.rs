@@ -1,14 +1,23 @@
-use crate::exception::ErrorStruct;
-use super::{User, group::Group, format_checker};
+// use crate::exception::ErrorStruct;
+use super::{User, group::Group};
 use std::time::SystemTime;
 use std::sync::Arc;
+use utils::time::Time;
 
 #[derive(Clone)]
 pub struct Message {
     group_id: String,
     from: Arc<User>,
-    time: SystemTime,
+    time: Time,
     ctx: Context,
+}
+
+#[derive(Clone)]
+pub struct MsgStream {
+    group_id: String,
+    from: Arc<User>,
+    time: Time,
+    ctx: CtxStream,
 }
 
 #[derive(Clone)]
@@ -20,16 +29,19 @@ impl Context {
     }
 }
 
-impl From<String> for ErrorStruct<Context> {
-    fn from(value: String) -> Self {
-        let error_buffer = format_checker(value, "Ctx<", ">");
+#[derive(Clone)]
+pub struct CtxStream;
 
-        return match error_buffer {
-            ErrorStruct::Ok(_) => ErrorStruct::Ok(Context::new()),
-            ErrorStruct::Err(err) => ErrorStruct::Err(err),
-        }
-    }
-}
+// impl From<String> for ErrorStruct<Context> {
+//     fn from(value: String) -> Self {
+//         let error_buffer = format_checker(value, "Ctx<", ">");
+
+//         return match error_buffer {
+//             ErrorStruct::Ok(_) => ErrorStruct::Ok(Context::new()),
+//             ErrorStruct::Err(err) => ErrorStruct::Err(err),
+//         }
+//     }
+// }
 
 impl From<Context> for String {
     fn from(_value: Context) -> Self {

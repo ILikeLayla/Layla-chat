@@ -1,6 +1,6 @@
 use super::{User, group::Group};
 use std::collections::HashMap;
-use logger::exception::error::*;
+use utils::exception::error::*;
 
 pub struct Manager {
     group_list: HashMap<String, Group>,

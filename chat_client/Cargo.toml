@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 client_core = { path = "../client_core" }
+utils = { path = "../utils" }

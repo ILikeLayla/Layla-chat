@@ -1,11 +1,11 @@
-use super::format_checker;
+// use super::format_checker;
 use std::hash::{Hasher, Hash};
 use std::collections::hash_map::DefaultHasher;
 use std::time::SystemTime;
 use super::config::UNACCEPTABLE_NAME_CHAR;
 use super::MANAGER;
 // use logger::exception::error::{Error, ErrorType, ErrorStruct};
-use logger::exception::error::*;
+use utils::exception::error::*;
 
 #[derive(PartialEq, Eq, Clone)]
 pub struct User {
@@ -14,16 +14,16 @@ pub struct User {
 }
 
 impl User {
-    pub fn new(name: &str, id: &str) -> Result<Self, Error> {
+    pub fn new(name: &str, id: &str) -> ErrorStruct<Self> {
         for i in UNACCEPTABLE_NAME_CHAR.iter() {
             if name.contains(i) {
-                return Err(Error::default(ErrorType::WrongFormat))
+                return ErrorStruct::Err(Error::default(ErrorType::UnacceptableArgument))
             }
         };
-        Ok(Self { name: name.to_string(), id: id.to_string()})
+        ErrorStruct::Ok(Self { name: name.to_string(), id: id.to_string()})
     }
 
-    pub fn default(name: &str) -> Result<Self, Error> {
+    pub fn default(name: &str) -> ErrorStruct<Self> {
         let mut s = DefaultHasher::default();
         name.hash(&mut s);
         format!("{:?}", SystemTime::now()).hash(&mut s);
@@ -40,43 +40,43 @@ impl User {
     }
 }
 
-impl From<String> for &User {
-    fn from(value: String) -> Self {
-        let data = format_checker(value, "User<", ">");
+// impl From<String> for &User {
+//     fn from(value: String) -> Self {
+//         let data = format_checker(value, "User<", ">");
 
-        let data = match data {
-            ErrorStruct::Ok(s) => s,
-            ErrorStruct::Err(err) => return ErrorStruct::Err(err),
-        };
+//         let data = match data {
+//             ErrorStruct::Ok(s) => s,
+//             ErrorStruct::Err(err) => return ErrorStruct::Err(err),
+//         };
 
-        let label = ["name", "id"];
+//         let label = ["name", "id"];
 
-        let mut buffer = Vec::new();
-        for (place, i) in data.split(",").enumerate() {
-            let temp = format_checker(i.to_string(), &format!("{}<", label[place]), ">");
-            buffer.push(temp)
-        }
+//         let mut buffer = Vec::new();
+//         for (place, i) in data.split(",").enumerate() {
+//             let temp = format_checker(i.to_string(), &format!("{}<", label[place]), ">");
+//             buffer.push(temp)
+//         }
 
-        let mut buffer1 = Vec::new();
+//         let mut buffer1 = Vec::new();
 
-        for i in buffer.iter() {
-            buffer1.push(match &i {
-                &ErrorStruct::Ok(s) => s,
-                &ErrorStruct::Err(e) => return ErrorStruct::Err(e.clone())
-            })
-        }
+//         for i in buffer.iter() {
+//             buffer1.push(match &i {
+//                 &ErrorStruct::Ok(s) => s,
+//                 &ErrorStruct::Err(e) => return ErrorStruct::Err(e.clone())
+//             })
+//         }
 
-        let user_check = MANAGER.check_user_exist(&buffer1[1]);
-        return match user_check {
-            true => {
-                MANAGER.get_user(&buffer1[1])
-            },
-            false => unsafe {
-                MANAGER.add_user(User { name: buffer1[0].clone(),  id: buffer1[1].clone() })
-            }
-        }
-    }
-}
+//         let user_check = MANAGER.check_user_exist(&buffer1[1]);
+//         return match user_check {
+//             true => {
+//                 MANAGER.get_user(&buffer1[1])
+//             },
+//             false => unsafe {
+//                 MANAGER.add_user(User { name: buffer1[0].clone(),  id: buffer1[1].clone() })
+//             }
+//         }
+//     }
+// }
 
 impl From<User> for String {
     fn from(value: User) -> Self {

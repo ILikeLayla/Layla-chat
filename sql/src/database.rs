@@ -7,8 +7,8 @@ pub struct DataBase {
     connection: Pool<MySql> 
 }
 
-impl DataBase {
-    pub fn new() -> Result<Self, sqlx::Error> {
+// impl DataBase {
+//     pub fn new() -> Result<Self, sqlx::Error> {
 
-    }
-}
+//     }
+// }

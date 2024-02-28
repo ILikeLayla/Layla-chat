@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::sync::Arc;
-use super::{User, Message, exception::{Error, ErrorType}};
+use super::{User, Message};
 
 pub struct Group {
     id: String,

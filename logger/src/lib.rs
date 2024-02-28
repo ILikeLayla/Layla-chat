@@ -1,4 +1,4 @@
-pub mod exception;
+// pub mod exception;
 mod writer;
 mod reader;
 

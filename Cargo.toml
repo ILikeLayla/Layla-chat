@@ -1,5 +1,5 @@
 [workspace] 
-members = [ "chat_client", "chat_server", "client_core", "http", "http_server", "logger", "server_core", "sql", "tcp_server" , "utils"]
+members = [ "chat_client", "chat_server", "client_core", "http", "logger", "server_core", "sql", "utils"]
 resolver = "2"
 
 [package]

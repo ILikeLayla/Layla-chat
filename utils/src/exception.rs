@@ -6,7 +6,11 @@ lazy_static! {
         (0, "Cannot find the id."),
         (1, "The id is already occupied."),
         (2, "Need to initialize the object."),
-        // (3, "Wrong format is given.")
+        (3, "Unacceptable argument is given."),
+        (4, "Network issues."),
+        (5, "Some unknown problems happened, nad no information was given for investigation."),
+        (6, "Failed to initialize."),
+        (7, "Failed to parse.")
     ]);
 }
 
@@ -15,10 +19,14 @@ pub mod error {
 
     #[derive(Clone, Debug, Copy)]
     pub enum ErrorType {
-        IdNotFound = 0,
+        IdNotFound = 0, 
         IdOccupied = 1,
         NeedToInit = 2,
-        // WrongFormat = 3,
+        UnacceptableArgument = 3,
+        NetWorkIssue = 4,
+        UnknownProblem = 5,
+        InitFailed = 6,
+        FailedToParse = 7,
     }
 
     #[derive(Debug, Clone)]
@@ -52,9 +60,9 @@ pub mod error {
         Err(Error)
     }
 
-    // impl<T: From<String>> From<String> for ErrorStruct<T> {
-    //     fn from(value: String) -> Self {
-    //         ErrorStruct::Ok(T::from(value))
-    //     }
-    // }
+    impl<T> ErrorStruct<T> {
+        pub fn default_err(error_type: ErrorType) -> Self {
+            Self::Err(Error::default(error_type))
+        }
+    }
 }
