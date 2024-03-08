@@ -1,6 +1,6 @@
-use super::{User, group::Group};
+use super::{User, Group};
 use std::collections::HashMap;
-use utils::exception::error::*;
+use utils::exception::*;
 
 pub struct Manager {
     group_list: HashMap<String, Group>,
@@ -36,19 +36,6 @@ impl Manager {
         return self.user_list.contains_key(id);
     }
 }
-
-// impl std::ops::Deref for Manager {
-//     type Target = Manager;
-//     fn deref(&self) -> &Self::Target {
-//         self
-//     }
-// }
-
-// impl std::ops::DerefMut for Manager {
-//     fn deref_mut(&mut self) -> &mut Self::Target {
-//         self
-//     }
-// }
 
 impl utils::init_block::InitAble for Manager {
     fn init() -> Self {

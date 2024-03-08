@@ -194,7 +194,9 @@ dependencies = [
 name = "client_core"
 version = "0.1.0"
 dependencies = [
+ "bytes",
  "chrono",
+ "core_base",
  "lazy_static",
  "logger",
  "tokio",
@@ -212,6 +214,13 @@ name = "core-foundation-sys"
 version = "0.8.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "06ea2b9bc92be3c2baa9334a323ebca2d6f074ff852cd1d7b11064035cd3868f"
+
+[[package]]
+name = "core_base"
+version = "0.1.0"
+dependencies = [
+ "utils",
+]
 
 [[package]]
 name = "cpufeatures"

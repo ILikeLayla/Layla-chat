@@ -24,9 +24,7 @@ pub fn init() {
 /// }
 ///
 /// impl Serializable for Foo {
-///     fn to_string -> String {
-///         // some codes can return a detailed string.
-///     }
+///     fn to_string -> String { /* something to generate a detailed string. */ }
 /// 
 ///     fn from_string() -> ErrorStruct<Self> where Self:  Sized {
 ///         // some codes can return a new struct For through the given string.
@@ -41,20 +39,20 @@ pub fn init() {
 /// When sometimes due to some unexpected issues, we cannot successfully convert the string to struct, the ErrorStruct::Err will be given as the output value.
 pub trait Serializable {
     fn to_string(&self) -> String;
-    fn from_string(s: &str) -> exception::error::ErrorStruct<Self> where Self: Sized;
+    fn from_string(s: &str) -> exception::ErrorStruct<Self> where Self: Sized;
     fn to_bytes(&self) -> Vec<u8> {
-        // a standard by not comprehensive realization.
+        /// a standard by not comprehensive realization.
         self.to_string().into_bytes()
     }
-    fn from_bytes(bytes: &[u8]) -> exception::error::ErrorStruct<Self> where Self: Sized {
-        // a standard by not comprehensive realization.
+    fn from_bytes(bytes: &[u8]) -> exception::ErrorStruct<Self> where Self: Sized {
+        /// a standard by not comprehensive realization.
         let s = match std::str::from_utf8(bytes) {
             Ok(s) => s,
-            Err(_) => return exception::error::ErrorStruct::default_err(exception::error::ErrorType::FailedToParse),
+            Err(_) => return exception::ErrorStruct::default_err(exception::ErrorType::FailedToParse),
         };
         match Self::from_string(s) {
-            exception::error::ErrorStruct::Ok(obj) => exception::error::ErrorStruct::Ok(obj),
-            exception::error::ErrorStruct::Err(e) => exception::error::ErrorStruct::Err(e),
+            exception::ErrorStruct::Ok(obj) => exception::ErrorStruct::Ok(obj),
+            exception::ErrorStruct::Err(e) => exception::ErrorStruct::Err(e),
         }
     }
 }

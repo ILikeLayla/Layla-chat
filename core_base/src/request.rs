@@ -1,4 +1,4 @@
-use super::User;
+use super::RawUser;
 
 use std::time::SystemTime;
 
@@ -28,5 +28,5 @@ impl Request {
 pub struct EnterRequest {
     group_id: String,
     group_password: String,
-    user: User,
+    user: RawUser,
 }

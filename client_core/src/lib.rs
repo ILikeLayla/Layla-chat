@@ -1,16 +1,12 @@
-mod message;
 mod user;
 mod manager;
-mod request;
-mod config;
-mod group;
 mod service;
+mod group;
 
-pub use message::*;
 pub use user::*;
 pub use manager::*;
-pub use request::*;
 pub use service::*;
+pub use group::*;
 
 // use logger::exception::error::*;
 use utils::init_block::InitBlock;
@@ -18,6 +14,7 @@ use utils::init_block::InitBlock;
 static mut MANAGER: InitBlock<Manager> = InitBlock{ item: None };
 
 pub fn init() {
+    utils::init();
     unsafe {
         MANAGER.init();
     }
