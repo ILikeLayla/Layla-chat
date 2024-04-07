@@ -19,17 +19,19 @@ impl<T: InitAble + Sized> InitAble for Option<T> {
 ///
 /// # Example
 /// ```
+/// use utils::init_block::{InitBlock, InitAble};
+/// 
 /// struct Foo;
-///
+/// 
 /// impl InitAble for Foo {
-///     fn init() -> Self { /* Something to initialize the Foo */ }
+///     fn init() -> Self { Self {} }
 /// }
 /// 
-/// static Bar: InitBlock<Foo> = InitBlock { item: None }
+/// static mut BAR: InitBlock<Foo> = InitBlock { item: None };
 /// 
 /// fn init() {
 ///     unsafe {
-///         Bar.init{}
+///         BAR.init()
 ///     }
 /// }
 /// ```
@@ -39,22 +41,22 @@ pub struct InitBlock<T: InitAble> {
 }
 
 impl<T: InitAble> InitBlock<T> {
-    /// Used to initialize the item filed that with "InitAble" trait.
+    /// To initialize the item filed that with "InitAble" trait.
     pub fn init(&mut self) {
         self.item.self_init();
     }
 
-    /// Used to check the item had been initialized or not.
+    /// To check the item had been initialized or not.
     pub fn status(&self) -> bool {
         self.item.is_some()
     }
 
-    /// Get a reference to the item.
+    /// To get a reference to the item.
     pub fn get(&self) -> &T {
         &self.item.as_ref().unwrap()
     }
 
-    /// Get a mutable reference to the item.
+    /// To get a mutable reference to the item.
     pub fn get_mut(&mut self) -> &mut T {
         self.item.as_mut().unwrap()
     }

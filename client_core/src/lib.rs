@@ -11,7 +11,7 @@ pub use group::*;
 // use logger::exception::error::*;
 use utils::init_block::InitBlock;
 
-static mut MANAGER: InitBlock<Manager> = InitBlock{ item: None };
+static mut MANAGER: InitBlock<Manager> = InitBlock { item: None };
 
 pub fn init() {
     utils::init();
